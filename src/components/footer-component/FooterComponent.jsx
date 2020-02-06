@@ -5,6 +5,7 @@
     render() {
          return (
              <div>
+                 <hr className="my-4"></hr>
                  Footer
              </div>
          )

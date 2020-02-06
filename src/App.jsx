@@ -1,14 +1,31 @@
-// import React from 'react';
-// import './App.css';
-import MainComponent from './components/main-component/MainComponent';
-
 import React, { Component } from 'react'
+import HeaderComponent from './components/header-component/HeaderComponent'
+import Footer from './components/footer-component/FooterComponent'
+import ContainerComponent from './components/search-form-component/SearchFormComponent'
+import { Row, Container, Col } from 'react-bootstrap'
+import RouterComponent from './components/router-component/RouterComponent'
 
 export default class App extends Component {
   
   render() {
     return (
-      <MainComponent />
+      <Container>
+      <Row>
+          <Col sm={12}>
+              <HeaderComponent></HeaderComponent>
+          </Col>
+      </Row>
+      <Row>
+          <Col sm={12}>
+              <RouterComponent />
+          </Col>
+      </Row>
+      <Row>
+          <Col sm={12}>
+              <Footer />
+          </Col>
+      </Row>
+  </Container>
     );
   }
 }

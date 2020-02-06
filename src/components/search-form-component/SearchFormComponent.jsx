@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
-import { Form, Col, Button, Jumbotron, Container, Row } from 'react-bootstrap'
+import { Form, Col, Button, Container, Row } from 'react-bootstrap'
 
-export default class ContainerComponent extends Component {
+export default class SearchFormComponent extends Component {
+  
     render() {
         return (
-            <div>
-               
+            <React.Fragment>
+                <hr className="my-4"></hr>
                 <Container>
-                    <h2>Faça aqui sua contação de seguro viagem!</h2>
+                    <h2>Faça aqui sua contação de seguro viagem! </h2>
                 </Container>
-                
-                <Form>
+                <hr className="my-4"></hr>
 
+                <Form name='searchForm'>
                     <Row>
                         <Col lg="4">
                             <Form.Control as="select" size="lg">
@@ -26,12 +27,12 @@ export default class ContainerComponent extends Component {
                             <Form.Control size="lg" placeholder="Data da volta" />
                         </Col>
                         <Col lg="4">
-                            <Button variant="primary" size="lg" type="submit">Fazer contação</Button>
+                            <Button variant="primary"  size="lg" type="button">Fazer contação</Button>
                         </Col>
                     </Row>
-                  
+
                 </Form>
-            </div>
+            </React.Fragment>
         )
     }
 }
