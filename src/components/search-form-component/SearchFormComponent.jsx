@@ -1,8 +1,31 @@
 import React, { Component } from 'react'
 import { Form, Col, Button, Container, Row } from 'react-bootstrap'
+import TravelInsuranceService from '../../services/TravelInsuranceService'
+
 
 export default class SearchFormComponent extends Component {
-  
+
+    constructor(props) {
+        super(props);
+
+        this.state = { continentList: [] }
+
+        this.travelInsuranceService = new TravelInsuranceService();
+    }
+
+    componentDidMount() {
+        this.travelInsuranceService.getAllDestinations()
+            .then(response => {
+                
+                this.handleChange(response.data)
+            })
+    }   
+
+    handleChange(data) {
+        debugger
+        this.setState({continentList: data});
+      }
+
     render() {
         return (
             <React.Fragment>
@@ -16,8 +39,7 @@ export default class SearchFormComponent extends Component {
                     <Row>
                         <Col lg="4">
                             <Form.Control as="select" size="lg">
-                                <option>Selecione o continente</option>
-                                <option>...</option>
+                                {this.state.continentList.map((destinatio) => <option value={destinatio.name}>{destinatio.name}</option>)}
                             </Form.Control>
                         </Col>
                         <Col lg="2">
@@ -27,7 +49,7 @@ export default class SearchFormComponent extends Component {
                             <Form.Control size="lg" placeholder="Data da volta" />
                         </Col>
                         <Col lg="4">
-                            <Button variant="primary"  size="lg" type="button">Fazer contação</Button>
+                            <Button variant="primary" size="lg" type="button">Fazer contação</Button>
                         </Col>
                     </Row>
 
