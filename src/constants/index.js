@@ -1,5 +1,5 @@
 const API = {
-    URL: 'https://demo.assisttrip.com.br/api/base',
+    URL: 'https://demo.assisttrip.com.br/api',
     HEADERS: {
         AUTH: 'Basic ZGVtbzozIzJTdFpUJDVFcm5HWVpV',
         ACCEPT: 'application/json',
