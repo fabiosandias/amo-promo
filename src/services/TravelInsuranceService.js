@@ -14,8 +14,8 @@ class TravelInsuranceService {
         axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
     }
 
-    async getAllDestinations() {
-        return await axios.get(`${API.URL}/destinations`).then(response => response)
+    getAllDestinations() {
+        return axios.get(`${API.URL}/destinations`).then(response => response.data)
     }
 }
 
