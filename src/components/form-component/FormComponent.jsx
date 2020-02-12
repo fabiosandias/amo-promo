@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { Form, Col, Button, Row } from 'react-bootstrap'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Moment from 'moment';
 
 import { getAllDestinations } from '../../store/destinations/actions'
 import { search } from '../../store/search-result/action-search-result'
-import TravelInsuranceService from '../../services/TravelInsuranceService';
 
- class FormComponent extends Component {
-    
+import DateTimePicker from 'react-widgets/lib/DateTimePicker'
+
+class FormComponent extends Component {
+
     constructor(props) {
         super(props)
 
@@ -18,38 +20,31 @@ import TravelInsuranceService from '../../services/TravelInsuranceService';
             destination: undefined,
             coverages: [
                 0
-              ]
+            ]
         }
 
         this.handleChangeDestination = this.handleChangeDestination.bind(this);
         this.handleChangecoverageEnd = this.handleChangecoverageEnd.bind(this);
         this.handleChangecoverageBegin = this.handleChangecoverageBegin.bind(this);
-        // this.searchTravelInsurance = this.searchTravelInsurance.bind(this);
-        
+
     }
 
     handleChangeDestination(event) {
-        this.setState({destination: +event.target.value})
+        this.setState({ destination: +event.target.value })
     }
     handleChangecoverageEnd(event) {
-        this.setState({ coverage_end: event.target.value})
+        this.setState({ coverage_end: Moment(event).format('YYYY-MM-DD') })
     }
     handleChangecoverageBegin(event) {
-        this.setState({coverage_begin: event.target.value})
+        this.setState({ coverage_begin:  Moment(event).format('YYYY-MM-DD')})
     }
 
-    componentDidMount() {       
+    componentDidMount() {
         this.props.getAllDestinations();
     }
 
-    // searchTravelInsurance(data) {
-    //     debugger;
-    //     const travelInsuranceService = new TravelInsuranceService();
-    //     const travelInsurance = travelInsuranceService.search(data);
-    // }
-    
     render() {
-        
+
         const { search } = this.props;
 
         return (
@@ -58,52 +53,48 @@ import TravelInsuranceService from '../../services/TravelInsuranceService';
                 <Form name='searchForm'>
                     <Row>
                         <Col lg="4">
-                            <Form.Control 
-                                as="select" 
-                                size="lg"
+                            <Form.Control
+                                as="select"
                                 value={this.state.destination}
                                 onChange={this.handleChangeDestination}
-                                >
+                            >
                                 <option value="" style={{ display: "none" }}>Selecione o destino</option>
                                 {
                                     this.props.destinations.map((destination) => <option key={destination.id} value={destination.id}>{destination.name}</option>)
                                 }
                             </Form.Control>
                         </Col>
-                        <Col lg="2">
-                            <Form.Control 
-                                type={'text'}
-                                size="lg" 
-                                placeholder="Data de ida"
-                                value={this.state.coverage_begin}
+                        <Col lg="3">
+                            <DateTimePicker
+                                value={this.coverage_begin}
+                                min={new Date()}
+                                autoFocus={true}
+                                time={false}
+                                format="YYYY-MM-DD"
                                 onChange={this.handleChangecoverageBegin}
                             />
                         </Col>
-                        <Col lg="2">
-                            <Form.Control 
-                            type={'text'}
-                                size="lg" 
-                                placeholder="Data da volta" 
-                                value={this.state.coverage_end}
+                        <Col lg="3">
+                            <DateTimePicker
+                                value={this.coverage_end}
+                                min={new Date()}
+                                autoFocus={true}
+                                time={false}
+                                format="YYYY-MM-DD"
                                 onChange={this.handleChangecoverageEnd}
-                                />
-
-
-                            
+                            />
                         </Col>
-                        <Col lg="4">
+                        <Col lg="2">
                             <Button
-                                variant="primary" 
-                                size="lg" 
+                                variant="primary"
                                 type="button"
                                 onClick={() => search(this.state)}
-                                
+                                disabled={!this.state.coverage_begin || !this.state.coverage_end || !this.state.destination}
                             >
-                                Fazer contação
+                                Pesquisar
                             </Button>
                         </Col>
                     </Row>
-    
                 </Form>
             </React.Fragment>
         )
@@ -111,10 +102,9 @@ import TravelInsuranceService from '../../services/TravelInsuranceService';
 }
 
 const mapStateToProps = state => ({
-    destinations: state.destinationsList.destinations,
-    dataSearch: state.dataSearch
+    destinations: state.destinationsList.destinations
 });
-const mapDispatchToProps = dispatch => bindActionCreators({getAllDestinations, search}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ getAllDestinations, search }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormComponent)
 

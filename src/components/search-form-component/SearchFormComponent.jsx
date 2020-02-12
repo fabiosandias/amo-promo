@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container } from 'react-bootstrap'
 import FormComponent from '../form-component/FormComponent';
+import SearchResult from './search-result/SearchResult';
 
 
 class SearchFormComponent extends Component {
@@ -21,6 +22,10 @@ class SearchFormComponent extends Component {
                 <hr className="my-4"></hr>
 
                 <FormComponent />
+
+                <hr className="my-4"></hr>
+
+                <SearchResult></SearchResult>
             </React.Fragment>
         )
     }
