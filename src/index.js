@@ -17,14 +17,7 @@ import reducers from './store/destinations/combine'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-widgets/dist/css/react-widgets.css';
 
-import dateFnsLocalizer, { defaultFormats } from 'react-widgets-date-fns'
-
-import pt from 'date-fns/locale/pt'
-
-
 import './index.css';
-
-// Moment.locale(pt)
 
 momentLocalizer()
 
