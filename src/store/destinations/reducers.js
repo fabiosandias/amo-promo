@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-    destinations: [],
+    destinations: []
 }
 
 const reducers = (state = INITIAL_STATE, action) => {

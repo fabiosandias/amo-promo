@@ -60,7 +60,7 @@ class FormComponent extends Component {
                             >
                                 <option value="" style={{ display: "none" }}>Selecione o destino</option>
                                 {
-                                    this.props.destinations.map((destination) => <option key={destination.id} value={destination.id}>{destination.name}</option>)
+                                    this.props.destinations ? this.props.destinations.map((destination) => <option key={destination.id} value={destination.id}>{destination.name}</option>) : ''
                                 }
                             </Form.Control>
                         </Col>
@@ -70,7 +70,7 @@ class FormComponent extends Component {
                                 min={new Date()}
                                 autoFocus={true}
                                 time={false}
-                                format="YYYY-MM-DD"
+                                format="DD/MM/YYYY"
                                 onChange={this.handleChangecoverageBegin}
                             />
                         </Col>
@@ -78,9 +78,9 @@ class FormComponent extends Component {
                             <DateTimePicker
                                 value={this.coverage_end}
                                 min={new Date()}
-                                autoFocus={true}
+                                
                                 time={false}
-                                format="YYYY-MM-DD"
+                                format="DD/MM/YYYY"
                                 onChange={this.handleChangecoverageEnd}
                             />
                         </Col>

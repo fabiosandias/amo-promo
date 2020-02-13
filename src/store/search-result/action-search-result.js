@@ -25,3 +25,17 @@ export const actionSearch = (data) => {
     }
 }
 
+export const saveSelectedProduct = (data) => {
+    return {
+        type: 'SAVE_SELECTED_PRODUCT',
+        payload: data
+    }
+}
+
+export const saveCombineProduct = (data) => {
+    return {
+        type: 'SAVE_COMBINE_PRODUCT',
+        payload: data
+    }
+}
+

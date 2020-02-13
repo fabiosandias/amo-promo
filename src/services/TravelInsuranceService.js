@@ -19,7 +19,7 @@ class TravelInsuranceService {
     }
 
     getProducts() {
-        return axios.get(`${API.URL}/base/products`, options).then(response => response.data)
+        return axios.get(`${API.URL}/base/products`, options).then(response => response.data || [])
     }
 
     search(data) {

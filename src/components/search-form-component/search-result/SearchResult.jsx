@@ -2,21 +2,56 @@ import React, { Component } from 'react'
 import { Container, Col, Button, Row } from 'react-bootstrap'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { saveSelectedProduct, saveCombineProduct } from '../../../store/search-result/action-search-result'
+import { Redirect } from 'react-router-dom';
 
 class SearchResult extends Component {
 
     constructor(props) {
         super(props)
 
-        this.combineSearchResult = this.combineSearchResult.bind(this);
+        this.state = {
+            combineSearchResult: [],
+            selectedSearchResult: [],
+            isRedirect: false
+        }
+
+        this.handlesChangeCombineSearchResult = this.handlesChangeCombineSearchResult.bind(this);
+        this.handlesChangeSelectedSearchResult = this.handlesChangeSelectedSearchResult.bind(this);
+        this.redirect = this.redirect.bind(this);
+    }
+
+    handlesChangeCombineSearchResult(searchResult) {
+        this.setState({ combineSearchResult: searchResult })
+    }
+
+    handlesChangeSelectedSearchResult(selected) {
+        this.setState({ selectedSearchResult: selected })
+    }
+
+    setIsRedirect = () => {
+        this.setState({isRedirect: true})
+    }
+
+    redirect = () => {
+        if (this.state.isRedirect)
+            return <Redirect push={true} to="/checkout" />
     }
 
 
+
     render() {
+        const combineProduct = [];
+        if (this.props.result.length > 0 && this.props.products.length > 0) {
+            this.props.result.forEach((res, i) => {
+                combineProduct[i] = { ...this.props.products.find(product => product.id == res.product_id), ...res };
+            });
+        }
+
         return (
             <React.Fragment>
-
-                {this.combineSearchResult().map((result) =>
+                {this.redirect()}
+                {combineProduct.map((result) =>
                     <div key={result.id}>
                         <Container>
                             <Row>
@@ -37,6 +72,11 @@ class SearchResult extends Component {
                                     <Button
                                         variant="primary"
                                         type="button"
+                                        onClick={() => {
+                                            const { saveSelectedProduct } = this.props;
+                                            saveSelectedProduct(result);
+                                            this.setIsRedirect()
+                                        }}
                                     >
                                         Comprar
                                     </Button>
@@ -46,26 +86,9 @@ class SearchResult extends Component {
                         </Container>
                     </div>
                 )}
+
             </React.Fragment>
         )
-    }
-
-    combineSearchResult() {
-        const combineProduct = [];
-
-        debugger;
-        if (this.props.result.length > 0 && this.props.products.length > 0) {
-            this.props.result.forEach((res, i) => {
-                combineProduct[i] = { ...this.props.products.find(product => product.id == res.product_id), ...res };
-            });
-        } else {
-            return []
-        }
-           
-
-        
-        console.log(combineProduct)
-        return combineProduct;
     }
 }
 
@@ -73,6 +96,7 @@ const mapStateToProps = state => ({
     result: state.searchResult.result,
     products: state.searchResult.products
 });
-// const mapDispatchToProps = dispatch => bindActionCreators({getAllDestinations, search}, dispatch)
 
-export default connect(mapStateToProps)(SearchResult)
+const mapDispatchToProps = dispatch => bindActionCreators({ saveSelectedProduct, saveCombineProduct }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResult)
