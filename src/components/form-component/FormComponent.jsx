@@ -36,7 +36,7 @@ class FormComponent extends Component {
         this.setState({ coverage_end: Moment(event).format('YYYY-MM-DD') })
     }
     handleChangecoverageBegin(event) {
-        this.setState({ coverage_begin:  Moment(event).format('YYYY-MM-DD')})
+        this.setState({ coverage_begin: Moment(event).format('YYYY-MM-DD') })
     }
 
     componentDidMount() {
@@ -78,7 +78,7 @@ class FormComponent extends Component {
                             <DateTimePicker
                                 value={this.coverage_end}
                                 min={new Date()}
-                                
+
                                 time={false}
                                 format="DD/MM/YYYY"
                                 onChange={this.handleChangecoverageEnd}
@@ -107,5 +107,3 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({ getAllDestinations, search }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormComponent)
-
-

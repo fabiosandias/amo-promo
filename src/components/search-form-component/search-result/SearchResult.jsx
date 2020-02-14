@@ -70,7 +70,7 @@ class SearchResult extends Component {
 
                                 <Col>
                                     <Button
-                                        variant="primary"
+                                        variant="success"
                                         type="button"
                                         onClick={() => {
                                             const { saveSelectedProduct } = this.props;

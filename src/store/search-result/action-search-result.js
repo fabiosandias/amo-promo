@@ -39,3 +39,10 @@ export const saveCombineProduct = (data) => {
     }
 }
 
+export const getselectedProduct = (data) => {
+    return {
+        type: 'GET_SELECTED_PRODUCT',
+        payload: data
+    }
+}
+
