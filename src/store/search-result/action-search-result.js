@@ -11,11 +11,22 @@ export const search = (data) => {
     }
 }
 
+// export const purchase = (data) => {
+
+//     debugger
+
+//     return dispatch => {
+//         travelInsuranceService.purchase(data).then(resp => dispatch(actionPurchase(resp.data))
+//         ).catch(e => {
+//             debugger
+//         })
+//     }
+// }
+
 export const saveSearchForm = (data) => {
     return {
         type: 'SAVE_SEARCH_FORM',
         payload: data
-        
     }
 }
 
@@ -26,6 +37,7 @@ export const getProducts = () => {
         payload: response
     }
 }
+
 
 export const purchase = (data) => {
     const response = travelInsuranceService.purchase(data);

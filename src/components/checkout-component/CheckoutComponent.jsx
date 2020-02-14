@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getselectedProduct, purchase } from '../../store/search-result/action-search-result'
 import { Redirect } from 'react-router-dom';
-import  { STATE_OF_BRAZIL }  from '../../constants'
+import { STATE_OF_BRAZIL } from '../../constants'
+
+import DateTimePicker from 'react-widgets/lib/DateTimePicker'
+import Moment from 'moment';
 
 class CheckoutComponent extends Component {
     constructor(props) {
@@ -19,23 +22,23 @@ class CheckoutComponent extends Component {
                 coverage_end: "",
                 destination_id: 0,
                 contact: {
-                    name: "string",
-                    email: "string",
-                    phone: "string"
+                    name: "",
+                    email: "",
+                    phone: ""
                 },
                 address: {
-                    address: "string",
-                    cep: "string",
-                    city: "string",
-                    state: "string"
+                    address: "",
+                    cep: "",
+                    city: "",
+                    state: ""
                 },
                 insureds: [
                     {
                         external_id: 0,
-                        first_name: "string",
-                        last_name: "string",
-                        date_of_birth: "string",
-                        cpf: "string"
+                        first_name: "",
+                        last_name: "",
+                        date_of_birth: "",
+                        cpf: ""
                     }
                 ]
             }
@@ -44,57 +47,76 @@ class CheckoutComponent extends Component {
 
         this.handleChangeObject = this.handleChangeObject.bind(this);
         this.handleChangeArrayOfObject = this.handleChangeArrayOfObject.bind(this);
-        this.handleChangeSearchFormCoverageBegin = this.handleChangeSearchFormCoverageBegin.bind(this);
-        this.handleChangeSearchFormCoverageEnd = this.handleChangeSearchFormCoverageEnd.bind(this);
-        this.handleChangeSearchFormDestination = this.handleChangeSearchFormDestination.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+
     }
 
-    handleChangeSearchFormCoverageBegin() {
-      
+    handleChange() {
+        this.setState(prevState => ({
+            ...prevState,
+            send: { ...prevState.send, plan_id: this.props.checkout.id }
+        }))
 
-        this.setState(prevState => ({ ...prevState,
-             send: { ...prevState.send, coverage_begin: this.props.searchForm.coverage_begin } 
-            }))
+        this.setState(prevState => ({
+            ...prevState,
+            send: { ...prevState.send, external_id: this.props.checkout.id }
+        }))
+
+        this.setState(prevState => ({
+            ...prevState,
+            send: { ...prevState.send, coverage_begin: this.props.searchForm.coverage_begin }
+        }))
+
+        this.setState(prevState => ({
+            ...prevState,
+            send: { ...prevState.send, coverage_end: this.props.searchForm.coverage_end }
+        }))
+
+        this.setState(prevState => ({
+            ...prevState,
+            send: { ...prevState.send, destination_id: this.props.searchForm.destination }
+        }))
+
     }
 
-    handleChangeSearchFormCoverageEnd() {
-        this.setState(prevState => ({ ...prevState,
-            send: { ...prevState.send, coverage_end: this.props.searchForm.coverage_end } 
-           }))
-    }
 
-    handleChangeSearchFormDestination() {
-
-        this.setState(prevState => ({ ...prevState,
-            send: { ...prevState.send, destination_id: this.props.searchForm.destination } 
-           }))
-    }
 
     handleChangeObject = (objectKey, key, event) => {
         const value = event.target.value;
-        this.setState(prevState => ({ ...prevState, send: { ...prevState.send, [objectKey]: {
-                ...prevState.send[objectKey],  [key]: value
-            } } 
+        this.setState(prevState => ({
+            ...prevState, send: {
+                ...prevState.send, [objectKey]: {
+                    ...prevState.send[objectKey], [key]: value
+                }
+            }
         }))
     }
 
-    handleChangeArrayOfObject = (key, event) => {
-        this.setState({
-            insureds: this.state.insureds.forEach((insurence, index) => {
+    handleChangeArrayOfObject = (key, event, index) => {
 
-                return index === 0 ?
-                    { ...insurence, [key]: event.target.value } : insurence
-            }),
-        })
+        const newInsureds = [...this.state.send.insureds];
+
+        if (key === 'date_of_birth') {
+            newInsureds[index][key] = Moment(event).format('YYYY-MM-DD');
+        } else {
+            newInsureds[index][key] = event.target.value;
+        }
+
+        this.setState(prevState => ({
+            ...prevState, send: {
+                ...prevState.send, insureds: newInsureds
+            }
+
+        }))
+
+
     }
 
     componentDidMount() {
         this.setState({ ...this.state.checkout, checkout: this.props.checkout })
-        this.handleChangeSearchFormCoverageBegin()
-        this.handleChangeSearchFormCoverageEnd()
-        this.handleChangeSearchFormDestination()
-    }
+        this.handleChange()
 
+    }
 
     render() {
         return (
@@ -168,7 +190,7 @@ class CheckoutComponent extends Component {
                                         onChange={(e) => this.handleChangeObject('address', 'state', e)}
                                     >
                                         <option>Selecione um estado...</option>
-        {STATE_OF_BRAZIL.map(st => <option key={st.state} value={st.state}>{st.name}</option>)}
+                                        {STATE_OF_BRAZIL.map(st => <option key={st.state} value={st.state}>{st.name}</option>)}
                                     </Form.Control>
                                 </Form.Group>
 
@@ -191,54 +213,69 @@ class CheckoutComponent extends Component {
                                         type="text"
                                         placeholder="Primeiro nome"
                                         value={this.first_name}
-                                        onChange={(e) => this.handleChangeArrayOfObject('first_name', e)}
+                                        onChange={(e) => this.handleChangeArrayOfObject('first_name', e, 0)}
                                     />
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="formGridPassword">
                                     <Form.Label>Segundo nome:</Form.Label>
-                                    <Form.Control type="text" placeholder="Segundo nome" />
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Segundo nome"
+                                        value={this.last_name}
+                                        onChange={(e) => this.handleChangeArrayOfObject('last_name', e, 0)}
+                                    />
                                 </Form.Group>
                             </Form.Row>
 
                             <Form.Row>
                                 <Form.Group as={Col} controlId="formGridAddress1">
                                     <Form.Label>Data de nascimento:</Form.Label>
-                                    <Form.Control placeholder="Data de nascimento" />
+
+
+                                    <DateTimePicker
+                                        value={this.date_of_birth}
+                                        placeholder="Data de nascimento"
+                                        time={false}
+                                        format="DD/MM/YYYY"
+                                        onChange={(e) => this.handleChangeArrayOfObject('date_of_birth', e, 0)}
+                                    />
                                 </Form.Group>
 
                                 <Form.Group as={Col} controlId="formGridAddress2">
                                     <Form.Label>CPF:</Form.Label>
-                                    <Form.Control placeholder="CPF" />
+                                    <Form.Control
+                                        placeholder="CPF"
+                                        value={this.cpf}
+                                        onChange={(e) => this.handleChangeArrayOfObject('cpf', e, 0)}
+                                    />
                                 </Form.Group>
                             </Form.Row>
-
-
-                            <Button 
-                            variant="success" 
-                            type="button"
-                            onClick={() => purchase(this.state.send)}
-                            >
-                                Contratar seguro viagem
-                            </Button>
                         </Form>
                     </Col>
                     <Col xs lg="4">
 
                         {this.props.checkout.coverages ?
-                           <div>
+                            <div>
                                 <h3>Detalhamento:</h3>
-                            <ListGroup>
-                                <ListGroup.Item>Plano: <strong>{this.props.checkout.name}</strong></ListGroup.Item>
-                                <ListGroup.Item>Preço por adulto: <strong>{this.props.checkout.elder_net_price}</strong></ListGroup.Item>
-                                <ListGroup.Item>Beneficio: <strong>{this.props.checkout.exchange_rate}</strong></ListGroup.Item>
-                                <ListGroup.Item>Comberturas: {this.props.checkout.coverages.map(coverage => <p key={coverage.coverage_id + '-'}>{coverage.display_name_ptbr}</p>)}</ListGroup.Item>
+                                <ListGroup>
+                                    <ListGroup.Item>Plano: <strong>{this.props.checkout.name}</strong></ListGroup.Item>
+                                    <ListGroup.Item>Preço por adulto: <strong>{this.props.checkout.elder_net_price}</strong></ListGroup.Item>
+                                    <ListGroup.Item>Beneficio: <strong>{this.props.checkout.exchange_rate}</strong></ListGroup.Item>
+                                    <ListGroup.Item>Comberturas: {this.props.checkout.coverages.map(coverage => <p key={coverage.coverage_id + '-'}>{coverage.display_name_ptbr}</p>)}</ListGroup.Item>
 
-                            </ListGroup>
-                           </div> : ''
+                                </ListGroup>
+                            </div> : ''
                         }
 
                     </Col>
+                    <Button
+                        variant="success"
+                        type="button"
+                        onClick={() => purchase(this.state.send)}
+                    >
+                        Contratar seguro viagem
+                            </Button>
                 </Row>
 
 
@@ -250,6 +287,7 @@ class CheckoutComponent extends Component {
 const mapStateToProps = state => ({
     checkout: state.searchResult.selectedProduct,
     searchForm: state.searchResult.searchForm,
+    purchaseResult: state.searchResult.purchaseResult,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({ getselectedProduct }, dispatch)

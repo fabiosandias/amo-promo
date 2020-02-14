@@ -3,7 +3,7 @@ const API = {
     HEADERS: {
         AUTH: 'Basic ZGVtbzozIzJTdFpUJDVFcm5HWVpV',
         ACCEPT: 'application/json',
-        CONTENT_TYPE: 'application/x-www-form-urlencoded'
+        CONTENT_TYPE: 'application/json'
     },
 }
 

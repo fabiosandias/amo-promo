@@ -1,17 +1,20 @@
 const INITIAL_STATE = {
     result: [],
     products: [],
+    purchaseResult: {},
     selectedProduct: [],
     combineProducts: [],
     searchForm: {}
 }
 
 const reducers = (state = INITIAL_STATE, action) => {
+    debugger
     switch (action.type) {
         case 'SEARCH':
             return { ...state, result: action.payload }
         case 'PURCHASE':
-            return { ...state, result: action.payload }
+            debugger
+            return { ...state, purchaseResult: action.payload }
         case 'GET_PRODUCTS':
             return { ...state, products: action.payload }
         case 'SAVE_SELECTED_PRODUCT':

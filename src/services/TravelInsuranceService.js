@@ -3,7 +3,11 @@ import { API } from '../constants';
 
 
 const options = {
-    headers: { 'Access-Control-Allow-Origin': '*', }
+    headers: { 
+        'Access-Control-Allow-Origin': '*',
+         'accept': 'application/json',
+         'Content-Type': 'application/json'
+        }
 }
 
 class TravelInsuranceService {
@@ -11,7 +15,6 @@ class TravelInsuranceService {
     constructor() {
         axios.defaults.baseURL = API.URL;
         axios.defaults.headers.common['Authorization'] = API.HEADERS.AUTH;
-        axios.defaults.headers.post['Content-Type'] = API.HEADERS.CONTENT_TYPE;
     }
 
     getAllDestinations() {
@@ -27,7 +30,6 @@ class TravelInsuranceService {
     }
     
     purchase(data) {
-        debugger
         return axios.post(`${API.URL}/purchase`, data, options).then(response => response.data)
     }
 }   
