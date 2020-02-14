@@ -1,5 +1,5 @@
 import axios from 'axios';
-import API from '../constants';
+import { API } from '../constants';
 
 
 const options = {
@@ -24,6 +24,11 @@ class TravelInsuranceService {
 
     search(data) {
         return axios.post(`${API.URL}/quotation`, data, options).then(response => response)
+    }
+    
+    purchase(data) {
+        debugger
+        return axios.post(`${API.URL}/purchase`, data, options).then(response => response.data)
     }
 }   
 

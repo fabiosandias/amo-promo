@@ -6,7 +6,16 @@ export const search = (data) => {
     return dispatch => {
         travelInsuranceService.search(data)
         .then(resp => dispatch(actionSearch(resp.data)))
-        .then(resp => dispatch(getProducts()))
+        .then(resp => dispatch(getProducts(data)))
+        .then(resp => dispatch(saveSearchForm(data)))
+    }
+}
+
+export const saveSearchForm = (data) => {
+    return {
+        type: 'SAVE_SEARCH_FORM',
+        payload: data
+        
     }
 }
 
@@ -14,6 +23,14 @@ export const getProducts = () => {
     const response = travelInsuranceService.getProducts();
     return {
         type: 'GET_PRODUCTS',
+        payload: response
+    }
+}
+
+export const purchase = (data) => {
+    const response = travelInsuranceService.purchase(data);
+    return {
+        type: 'PURCHASE',
         payload: response
     }
 }

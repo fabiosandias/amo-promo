@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { Form, Col, Button, Row, ListGroup } from 'react-bootstrap'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getselectedProduct } from '../../store/search-result/action-search-result'
+import { getselectedProduct, purchase } from '../../store/search-result/action-search-result'
+import { Redirect } from 'react-router-dom';
+import  { STATE_OF_BRAZIL }  from '../../constants'
 
 class CheckoutComponent extends Component {
     constructor(props) {
@@ -13,8 +15,8 @@ class CheckoutComponent extends Component {
             send: {
                 external_id: 0,
                 plan_id: 0,
-                coverage_begin: "string",
-                coverage_end: "string",
+                coverage_begin: "",
+                coverage_end: "",
                 destination_id: 0,
                 contact: {
                     name: "string",
@@ -42,12 +44,38 @@ class CheckoutComponent extends Component {
 
         this.handleChangeObject = this.handleChangeObject.bind(this);
         this.handleChangeArrayOfObject = this.handleChangeArrayOfObject.bind(this);
+        this.handleChangeSearchFormCoverageBegin = this.handleChangeSearchFormCoverageBegin.bind(this);
+        this.handleChangeSearchFormCoverageEnd = this.handleChangeSearchFormCoverageEnd.bind(this);
+        this.handleChangeSearchFormDestination = this.handleChangeSearchFormDestination.bind(this);
+    }
+
+    handleChangeSearchFormCoverageBegin() {
+      
+
+        this.setState(prevState => ({ ...prevState,
+             send: { ...prevState.send, coverage_begin: this.props.searchForm.coverage_begin } 
+            }))
+    }
+
+    handleChangeSearchFormCoverageEnd() {
+        this.setState(prevState => ({ ...prevState,
+            send: { ...prevState.send, coverage_end: this.props.searchForm.coverage_end } 
+           }))
+    }
+
+    handleChangeSearchFormDestination() {
+
+        this.setState(prevState => ({ ...prevState,
+            send: { ...prevState.send, destination_id: this.props.searchForm.destination } 
+           }))
     }
 
     handleChangeObject = (objectKey, key, event) => {
-        this.setState({
-            send: { [objectKey]: { ...this.state.send[objectKey], [key]: event.target.value } }
-        })
+        const value = event.target.value;
+        this.setState(prevState => ({ ...prevState, send: { ...prevState.send, [objectKey]: {
+                ...prevState.send[objectKey],  [key]: value
+            } } 
+        }))
     }
 
     handleChangeArrayOfObject = (key, event) => {
@@ -61,13 +89,17 @@ class CheckoutComponent extends Component {
     }
 
     componentDidMount() {
-        this.setState({ checkout: this.props.checkout })
+        this.setState({ ...this.state.checkout, checkout: this.props.checkout })
+        this.handleChangeSearchFormCoverageBegin()
+        this.handleChangeSearchFormCoverageEnd()
+        this.handleChangeSearchFormDestination()
     }
 
 
     render() {
         return (
             <React.Fragment>
+                
                 <br />
                 <h2>Contratação de seguro</h2>
                 <p>Preencha o formulário para finalizar sua compra</p>
@@ -136,7 +168,7 @@ class CheckoutComponent extends Component {
                                         onChange={(e) => this.handleChangeObject('address', 'state', e)}
                                     >
                                         <option>Selecione um estado...</option>
-                                        <option>...</option>
+        {STATE_OF_BRAZIL.map(st => <option key={st.state} value={st.state}>{st.name}</option>)}
                                     </Form.Control>
                                 </Form.Group>
 
@@ -182,7 +214,11 @@ class CheckoutComponent extends Component {
                             </Form.Row>
 
 
-                            <Button variant="success" type="submit">
+                            <Button 
+                            variant="success" 
+                            type="button"
+                            onClick={() => purchase(this.state.send)}
+                            >
                                 Contratar seguro viagem
                             </Button>
                         </Form>
@@ -213,6 +249,7 @@ class CheckoutComponent extends Component {
 
 const mapStateToProps = state => ({
     checkout: state.searchResult.selectedProduct,
+    searchForm: state.searchResult.searchForm,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({ getselectedProduct }, dispatch)
