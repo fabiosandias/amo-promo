@@ -8,7 +8,7 @@ const options = {
          'accept': 'application/json',
          'Content-Type': 'application/json'
         }
-}
+}   
 
 class TravelInsuranceService {
 
@@ -30,7 +30,7 @@ class TravelInsuranceService {
     }
     
     purchase(data) {
-        return axios.post(`${API.URL}/purchase`, data, options).then(response => response.data)
+        return axios.post(`${API.URL}/purchase`, data, options).then(response => response)
     }
 }   
 

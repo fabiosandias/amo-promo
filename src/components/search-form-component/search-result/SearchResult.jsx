@@ -42,7 +42,7 @@ class SearchResult extends Component {
 
     render() {
         const combineProduct = [];
-        if (this.props.result.length > 0 && this.props.products.length > 0) {
+        if (this.props.result && this.props.result.length > 0 && this.props.products && this.props.products.length > 0) {
             this.props.result.forEach((res, i) => {
                 combineProduct[i] = { ...this.props.products.find(product => product.id == res.product_id), ...res };
             });

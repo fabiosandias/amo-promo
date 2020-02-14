@@ -1,5 +1,7 @@
 import TravelInsuranceService from '../../services/TravelInsuranceService'
+import * as _ from '../../constants'
 const travelInsuranceService = new TravelInsuranceService()
+
 
 export const search = (data) => {
 
@@ -11,21 +13,9 @@ export const search = (data) => {
     }
 }
 
-// export const purchase = (data) => {
-
-//     debugger
-
-//     return dispatch => {
-//         travelInsuranceService.purchase(data).then(resp => dispatch(actionPurchase(resp.data))
-//         ).catch(e => {
-//             debugger
-//         })
-//     }
-// }
-
 export const saveSearchForm = (data) => {
     return {
-        type: 'SAVE_SEARCH_FORM',
+        type: _.ACTION.SAVE_SEARCH_FORM,
         payload: data
     }
 }
@@ -33,44 +23,36 @@ export const saveSearchForm = (data) => {
 export const getProducts = () => {
     const response = travelInsuranceService.getProducts();
     return {
-        type: 'GET_PRODUCTS',
+        type: _.ACTION.GET_PRODUCTS,
         payload: response
     }
 }
 
-
-export const purchase = (data) => {
-    const response = travelInsuranceService.purchase(data);
-    return {
-        type: 'PURCHASE',
-        payload: response
-    }
-}
 
 export const actionSearch = (data) => {
     return {
-        type: 'SEARCH',
+        type: _.ACTION.SEARCH,
         payload: data
     }
 }
 
 export const saveSelectedProduct = (data) => {
     return {
-        type: 'SAVE_SELECTED_PRODUCT',
+        type: _.ACTION.SAVE_SELECTED_PRODUCT,
         payload: data
     }
 }
 
 export const saveCombineProduct = (data) => {
     return {
-        type: 'SAVE_COMBINE_PRODUCT',
+        type: _.ACTION.SAVE_COMBINE_PRODUCT,
         payload: data
     }
 }
 
 export const getselectedProduct = (data) => {
     return {
-        type: 'GET_SELECTED_PRODUCT',
+        type: _.ACTION.GET_SELECTED_PRODUCT,
         payload: data
     }
 }

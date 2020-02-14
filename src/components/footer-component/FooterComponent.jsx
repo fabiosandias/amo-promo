@@ -6,7 +6,8 @@
          return (
              <div>
                  <hr className="my-4"></hr>
-                 Footer
+                 Aqui vai as informações dos footer
+                 <hr className="my-4"></hr>
              </div>
          )
      }
